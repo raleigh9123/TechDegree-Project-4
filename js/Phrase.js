@@ -29,7 +29,7 @@ class Phrase {
             if (letter === ' ') {
                 htmlLetterItem.className = 'space';
             } /* CSS Class "letter" if contains letter */ else {
-                htmlLetterItem.classList.add('letter', 'hide');
+                htmlLetterItem.classList.add('letter', 'hide', letter);
                 htmlLetterItem.textContent = letter;
             }
 
@@ -47,5 +47,11 @@ class Phrase {
     /**
      * reveals the letter(s) on the board that matches the player's selection. To reveal the matching letter(s), select all of the letter DOM elements that have a CSS class name that matches the selected letter and replace each selected element's hide CSS class with the show CSS class.
      */
-    showMatchedLetter() {}
+    showMatchedLetter(button) {
+        const matchedLetters = document.querySelectorAll(`.${button.textContent}`);
+
+        for (let i = 0; i < matchedLetters.length; i++) {
+            matchedLetters[i].classList.add('show');
+        }
+    }
 }
