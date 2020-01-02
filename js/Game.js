@@ -78,10 +78,15 @@ class Game {
      */
     removeLife() {
         // Replace liveHeart.png with lostHeart.png
-        const lives = document.querySelectorAll('.tries');
+        if (this.missed < 5) {
+            const totalLives = document.querySelectorAll('.tries');
+            let lifeNumber = totalLives.length - this.missed - 1;
 
+            totalLives[lifeNumber].childNodes[0].setAttribute('src', 'images/lostHeart.png');
+        }
         // Increment missed property
         this.missed += 1;
+        // If all lives lost, gameOver()
         if (this.missed === 5) {
             this.gameOver();
         }
