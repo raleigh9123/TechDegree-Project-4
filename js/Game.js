@@ -61,7 +61,7 @@ class Game {
         button.disabled = true;
 
         // If phrase does not include user selected letter, add "wrong" css class to button and call removeLife() method, else add "chosen" css class, call showMatchedLetter(), and check for win by calling checkForWin()
-        if (!this.activePhrase.phrase.includes(button.textContent)) {
+        if (this.activePhrase.checkLetter(button, this.activePhrase)) {
             button.classList.add('wrong');
             this.removeLife();
         } else {
