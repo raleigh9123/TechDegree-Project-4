@@ -67,7 +67,7 @@ class Game {
         } else {
             button.classList.add('chosen');
             this.activePhrase.showMatchedLetter(button);
-            if (this.checkForWin()) {
+            if (this.checkForWin(button)) {
                 this.gameOver();
             }
         }
@@ -96,11 +96,54 @@ class Game {
      * this method checks to see if the player has revealed all of the letters in the active phrase.
      *
      */
-    checkForWin() {}
+    checkForWin(button) {
+        const letters = document.querySelectorAll('.letter');
+        const numlettersToGuess = letters.length;
+
+        const correctLetters = document.querySelectorAll('.show');
+        const correctGuesses = correctLetters.length;
+
+        if (correctGuesses === numlettersToGuess) {
+            this.gameOver();
+        }
+    }
 
     /**
      * this method displays the original start screen overlay, and depending on the outcome of the game, updates the overlay h1 element with a friendly win or loss message, and replaces the overlay’s start CSS class with either the win or lose CSS class.
      *
      */
-    gameOver() {}
+    gameOver() {
+        if (this.missed === 5) {
+            document.querySelector('#game-over-message').textContent = 'You have lost! Try again!';
+        } else {
+            document.querySelector('#game-over-message').textContent = 'You won! Play again?';
+        }
+
+        document.getElementById('overlay').style.display = 'flex';
+
+        this.resetGame();
+    }
+
+    resetGame() {
+        // Reset Phrase
+        let lettersAndSpaces = document.querySelectorAll('#phrase ul li');
+        for (let letter of lettersAndSpaces) {
+            letter.parentNode.removeChild(letter);
+        }
+
+        // Reset Keys
+        let keys = document.querySelectorAll('.key');
+        for (let key of keys) {
+            key.disabled = false;
+            key.className = 'key';
+        }
+
+        // Reset Lives
+        let lives = document.querySelectorAll('.tries img');
+        for (let life of lives) {
+            life.src = 'images/liveHeart.png';
+        }
+
+        this.missed = 0;
+    }
 }
