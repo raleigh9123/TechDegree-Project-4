@@ -56,7 +56,33 @@ class Game {
      * @param {htmlElement} [key].event.Target
      * Check to see if the button clicked by the player matches a letter in the phrase and direct game logic if letter matches or fails to match.
      */
-    handleInteraction(button) {
+    handleInteraction(event) {
+        // Capture event (whether keydown or click) and store in variable
+        let button = event;
+
+        /**
+         * This if statement is evaluated only if the event is a keypress.
+         * 1. Store all onscreen keys in array
+         * 2. Declare typedKey variable
+         * 3. Create function findSelectedKey with @param letter This function searches the array of onScreen keys. Once a key onScreen matches the key pressed on keyboard, then typedKey variable equals matching on screen <button> element.
+         * 4. Change handleInteraction() method's button variable to match onscreen keyboard click
+         */
+        if (button.type === 'keydown') {
+            const onScreenKeys = document.querySelectorAll('.key');
+
+            let typedKey;
+            const findSelectedKey = letter => {
+                onScreenKeys.forEach(key => {
+                    if (key.textContent === letter) {
+                        typedKey = key;
+                    }
+                });
+            };
+
+            findSelectedKey(button.key);
+            button = typedKey;
+        }
+
         // Disables selected letter onscreen.
         button.disabled = true;
 
