@@ -3,13 +3,11 @@
  * Game.js */
 
 /**
- * The class should include a constructor that initializes the following properties:
- * 
- *  missed: used to track the number of missed guesses by the player. The initial value is 0, since no guesses have been made at the start of the game.
- *  phrases: an array of five Phrase objects to use with the game. A phrase should only include letters and spaces— no numbers, punctuation or other special characters.
-*   activePhrase: This is the Phrase object that’s currently in play. The initial value is null. Within the startGame() method, this property will be set to the Phrase object returned from a call to the getRandomPhrase() method.
- 
-*/
+ * Game Object contains 3 properties:
+ *  missed: tracks the number of missed guesses by the player.
+ *  phrases: an array of fifteen Phrase objects to use with the game. A phrase should only include letters and spaces— no numbers, punctuation or other special characters.
+ *   activePhrase: Phrase object currently in play.
+ */
 class Game {
     constructor() {
         this.missed = 0;
@@ -22,36 +20,32 @@ class Game {
             'easy does it',
             'under the weather',
             'on thin ice',
-            'perfect storm',
             'whole nine yards',
             'fit as a fiddle',
             'son of a gun',
             'on the spot',
             'abra cadabra',
             'clean as a whistle',
-            'shazam',
             'yeet',
         ];
         this.activePhrase = null;
     }
 
     /**
-     * hides the start screen overlay, calls the getRandomPhrase() method, and sets the activePhrase property with the chosen phrase. It also adds that phrase to the board by calling the addPhraseToDisplay() method on the active Phrase object.
-     *
+     * Reveals game board and loads new phrase
      */
     startGame() {
-        // Hides overlay
+        // Hides start game overlay
         document.getElementById('overlay').style.display = 'none';
-        // Takes random phrase from getRandomPhrase() method and passes into a new Phrase object, then sets the current game object's "activePhrase" to the new Phrase object
+        // Takes random phrase from getRandomPhrase() method and passes into a new Phrase object. Sets the current game object's "activePhrase" to generated Phrase object
         this.activePhrase = new Phrase(this.getRandomPhrase());
-        // Takes active phrase's string and passes into Phrase Object's addPhraseToDisplay() method to generate visual on screen
+        // Takes Phrase Object's string generates key spaces on screen
         const string = this.activePhrase.phrase;
         this.activePhrase.addPhraseToDisplay(string);
     }
 
     /**
-     * @return {phrase} randomly retrieves one of the phrases stored in the Game object's phrases array and returns it
-     *
+     * @return {phrase} Randomly retrieves one of the phrases stored in the Game object's phrases array and returns it.
      */
     getRandomPhrase() {
         const random = Math.floor(Math.random() * this.phrases.length);
@@ -59,18 +53,17 @@ class Game {
     }
 
     /**
-     * @param {htmlElement} [key].event.Target
-     * Check to see if the button clicked by the player matches a letter in the phrase and direct game logic if letter matches or fails to match.
+     * @param {htmlButton || keydownEventObject}
+     * Direct game logic to match correct keys or remove lives for wrong keys. End game when phrase is completed.
      */
     handleInteraction(event) {
-        // Capture event (whether keydown or click) and store in variable
+        // Capture event target (for onscreen button) or event object (for keydown event) and store in variable
         let button = event;
 
         /**
          * This if statement is evaluated only if the event is a keypress.
          * 1. Store all onscreen keys in array
-         * 2. Create function findSelectedKey with @param letter This function searches the array of onScreen keys. Once a key onScreen matches the key pressed on keyboard, then this.handleInteraction() variable 'button' equals matching on screen <button> element.
-         * 3. Change handleInteraction() method's button variable to match onscreen keyboard click
+         * 2. Create function 'findSelectedKey' with @param letter This function searches the array of onScreen keys. If a key onScreen matches the key pressed on keyboard, then change this.handleInteraction() method variable 'button' to equal matching on screen <button> element.
          */
         if (button.type === 'keydown') {
             const onScreenKeys = document.querySelectorAll('.key');
@@ -87,9 +80,9 @@ class Game {
 
         // Disables selected letter onscreen.
         button.disabled = true;
-        const letter = button.textContent;
 
-        // If phrase does not include user selected letter, add "wrong" css class to button and call removeLife() method, else add "chosen" css class, call showMatchedLetter(), and check for win by calling checkForWin()
+        // If phrase does not include user selected letter, add "chosen" css class, call showMatchedLetter(), and check for win by calling checkForWin(), else add "wrong" css class to button and call removeLife() method,
+        const letter = button.textContent;
         if (this.activePhrase.checkLetter(letter)) {
             button.classList.add('chosen');
             this.activePhrase.showMatchedLetter(button);
@@ -103,7 +96,7 @@ class Game {
     }
 
     /**
-     * this method removes a life from the scoreboard, by replacing one of the liveHeart.png images with a lostHeart.png image (found in the images folder) and increments the missed property. If the player has five missed guesses (i.e they're out of lives), then end the game by calling the gameOver() method.k
+     * Remove life from scoreboard and call gameOver() if all lives are lost.
      */
     removeLife() {
         // Replace liveHeart.png with lostHeart.png
@@ -122,24 +115,28 @@ class Game {
     }
 
     /**
-     * this method checks to see if the player has revealed all of the letters in the active phrase.
-     *
+     * Checks to see if the player has revealed all of the letters in the active phrase.
      */
     checkForWin() {
+        // Find total number of letters to guess
         const letters = document.querySelectorAll('.letter');
         const numlettersToGuess = letters.length;
 
+        // Find total number of correct letters
         const correctLetters = document.querySelectorAll('.show');
         const correctGuesses = correctLetters.length;
 
+        // If numbers match, gameOver();
         if (correctGuesses === numlettersToGuess) {
             this.gameOver();
         }
     }
 
     /**
-     * this method displays the original start screen overlay, and depending on the outcome of the game, updates the overlay h1 element with a friendly win or loss message, and replaces the overlay’s start CSS class with either the win or lose CSS class.
-     *
+     * Reveal the start overlay
+     * Evaluate total missed guesses to determine win or loss
+     * Update h1 element with win/loss message
+     * Reset game by calling resetGame()
      */
     gameOver() {
         if (this.missed === 5) {
@@ -153,6 +150,9 @@ class Game {
         this.resetGame();
     }
 
+    /**
+     * Reset game by clearing the active phrase on the board, resetting keys, and restoring lives. Reset missed counter
+     */
     resetGame() {
         // Reset Phrase
         let lettersAndSpaces = document.querySelectorAll('#phrase ul li');

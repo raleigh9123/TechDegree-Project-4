@@ -3,11 +3,7 @@
  * app.js */
 
 /**
- * Create a new instance of the Game class and add event listeners for the start button and onscreen keyboard buttons:
- */
-
-/**
- * Add a click event listener to the "Start Game" button which creates a new Game object and starts the game by calling the startGame() method.
+ * Add click event listener to "Start Game" button which instantiates a new Game object and starts the game with startGame() method.
  *
  */
 const game = new Game();
@@ -16,8 +12,7 @@ document.getElementById('btn__reset').addEventListener('click', function() {
 });
 
 /**
- * Add click event listeners to each of the onscreen keyboard buttons, so that clicking a button calls the handleInteraction() method on the Game object. Event delegation can also be used in order to avoid having to add an event listener to each individual keyboard button. Clicking the space between and around the onscreen keyboard buttons should not result in the handleInteraction() method being called.
- *
+ * Add click event listeners to each of the onscreen keyboard buttons, click calls handleInteraction() method on the Game object.
  */
 const onScreenKeys = document.querySelectorAll('.key');
 onScreenKeys.forEach(key => {
@@ -26,6 +21,9 @@ onScreenKeys.forEach(key => {
     });
 });
 
+/**
+ * Add keydown event listener. Calls handleInteraction() method on the Game object. Passes event object into method call.
+ */
 document.addEventListener('keydown', function(e) {
     game.handleInteraction(e);
 });
