@@ -40,8 +40,8 @@ class Phrase {
     /**
      * Checks to see if the letter selected by the player matches a letter in the phrase.
      */
-    checkLetter(button, activePhrase) {
-        return !activePhrase.phrase.includes(button.textContent);
+    checkLetter(letter) {
+        return this.phrase.includes(letter);
     }
 
     /**

@@ -69,39 +69,36 @@ class Game {
         /**
          * This if statement is evaluated only if the event is a keypress.
          * 1. Store all onscreen keys in array
-         * 2. Declare typedKey variable
-         * 3. Create function findSelectedKey with @param letter This function searches the array of onScreen keys. Once a key onScreen matches the key pressed on keyboard, then typedKey variable equals matching on screen <button> element.
-         * 4. Change handleInteraction() method's button variable to match onscreen keyboard click
+         * 2. Create function findSelectedKey with @param letter This function searches the array of onScreen keys. Once a key onScreen matches the key pressed on keyboard, then this.handleInteraction() variable 'button' equals matching on screen <button> element.
+         * 3. Change handleInteraction() method's button variable to match onscreen keyboard click
          */
         if (button.type === 'keydown') {
             const onScreenKeys = document.querySelectorAll('.key');
 
-            let typedKey;
             const findSelectedKey = letter => {
                 onScreenKeys.forEach(key => {
                     if (key.textContent === letter) {
-                        typedKey = key;
+                        button = key;
                     }
                 });
             };
-
             findSelectedKey(button.key);
-            button = typedKey;
         }
 
         // Disables selected letter onscreen.
         button.disabled = true;
+        const letter = button.textContent;
 
         // If phrase does not include user selected letter, add "wrong" css class to button and call removeLife() method, else add "chosen" css class, call showMatchedLetter(), and check for win by calling checkForWin()
-        if (this.activePhrase.checkLetter(button, this.activePhrase)) {
-            button.classList.add('wrong');
-            this.removeLife();
-        } else {
+        if (this.activePhrase.checkLetter(letter)) {
             button.classList.add('chosen');
             this.activePhrase.showMatchedLetter(button);
-            if (this.checkForWin(button)) {
+            if (this.checkForWin()) {
                 this.gameOver();
             }
+        } else {
+            button.classList.add('wrong');
+            this.removeLife();
         }
     }
 
@@ -128,7 +125,7 @@ class Game {
      * this method checks to see if the player has revealed all of the letters in the active phrase.
      *
      */
-    checkForWin(button) {
+    checkForWin() {
         const letters = document.querySelectorAll('.letter');
         const numlettersToGuess = letters.length;
 
