@@ -25,7 +25,3 @@ onScreenKeys.forEach(key => {
         game.handleInteraction(e.target);
     });
 });
-
-document.addEventListener('keydown', function(e) {
-    game.handleInteraction(e);
-});

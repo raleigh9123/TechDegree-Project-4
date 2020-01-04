@@ -15,8 +15,7 @@ class Game {
         this.missed = 0;
         this.phrases = [
             'An arm and a leg',
-            'Merry Christmas',
-            'good morning',
+            'good night',
             'bargain hunting',
             'cut corners',
             'break a leg',
@@ -25,6 +24,13 @@ class Game {
             'on thin ice',
             'perfect storm',
             'whole nine yards',
+            'fit as a fiddle',
+            'son of a gun',
+            'on the spot',
+            'abra cadabra',
+            'clean as a whistle',
+            'shazam',
+            'yeet',
         ];
         this.activePhrase = null;
     }

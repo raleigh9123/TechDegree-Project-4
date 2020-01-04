@@ -28,6 +28,7 @@ body {
   flex-direction: column;
   display: flex;
   height: 100vh;
+  background: linear-gradient(to bottom, #fc28a8 0%, #03edf9 100%);
 }
 
 li, ol, ul {
@@ -72,6 +73,8 @@ button {
   height: 100%;
   max-height: 900px;
   text-align: center;
+  background-color:#f2f2f2;
+  border-radius:4px;
 }
 
 .section {
@@ -180,11 +183,12 @@ button {
 }
 
 .start {
-  background-color: #3a3f58;
+  background: linear-gradient(to top, #fff951 15%, #fc28a8);
 }
 
 .start a {
-  color: #fff;
+  background-color: #3a3f58;
+  filter: drop-shadow(0 0 5px #03edf9);
 }
 
 .win {
